@@ -1,5 +1,5 @@
+const {createStore} = require('redux')
 // #1 write out an example/default version of my application state
-
 
 const defaultState = {
     count: 0
@@ -48,8 +48,29 @@ const counter = (state=defaultState, action) => {
         }
     };
 
+// #4 create your store that knows how to use your reducer function
 const store = createStore(counter);
+
+// subscribe to any notifications of any changes to the state
+store.subscribe(() => {
+    const theState = store.getState();
+    console.log(`The state is now ${theState.count}`)
+});
+
+module.exports = {
+    store,
+    ACTION_INC,
+    ACTION_DEC
+}
     
 
+/*
+
+const {
+     store, 
+     ACTION_INC,
+     ACTION_DEC
+     } = require('./index');
 
 
+     */
