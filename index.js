@@ -30,6 +30,22 @@ const ACTION_DEC = {
 
 }
 
+// "action creators"
+// when you need to configure an action, write a function
+const incrementCounter= (id) => {
+    return {
+        ...ACTION_INC,
+        id
+    }
+}
+
+const decrementCounter= (id) => {
+    return {
+        ...ACTION_DEC,
+        id
+    }
+}
+
 
 // #3 -write a pure function that accepts the current state and an action, then returns
 // the new version state
@@ -41,12 +57,38 @@ const counter = (state=defaultState, action) => {
         case ACTION_INC.type:
         // if it's 'INCREMENT', return a new state object with the count + 1
             return {
-                count: state.count + 1
+                // count: state.count + 1
+                // want to return the array of counters
+                // but modify the on where its id === action.id
+                counters: state.counters.map(oneCounter => {
+                    if (oneCounter.id === action.id) {
+                        // return a new version of oneCounter
+                        return {
+                            ...oneCounter,
+                            count: oneCounter.count + 1
+                        }
+                    } else {
+                        return oneCounter;
+                    }
+                })
             }
         case ACTION_DEC.type:
         // if it's 'DECREMENT', return a new state object with the count - 1
-            return {
-                count: state.count - 1
+            // return {
+            //     count: state.count - 1
+            // }
+            return{
+                counters: state.counters.map(oneCounter => {
+                    if (oneCounter.id === action.id) {
+                        // return a new version of oneCounter
+                        return {
+                            ...oneCounter,
+                            count: oneCounter.count - 1
+                        }
+                    } else {
+                        return oneCounter;
+                    }
+                })
             }
         default:
         //  else return the state as-is
@@ -65,6 +107,8 @@ store.subscribe(() => {
 
 module.exports = {
     store,
+    incrementCounter,
+    decrementCounter,
     ACTION_INC,
     ACTION_DEC
 }
